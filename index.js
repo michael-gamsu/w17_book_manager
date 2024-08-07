@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const Books = require("./models/books.model.js");
+require("dotenv").config();
 
 app.use(express.json());
 
@@ -82,14 +83,17 @@ app.delete("/books/delete/:id", async (req, res) => {
 	}
 });
 
+console.log("DB_URI:", process.env.DB_URI);
+console.log("PORT:", process.env.PORT);
+
 mongoose
-	.connect(process.env.DB_URI)
+	.connect(process.env.DB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 	.then(() => {
-		console.log("Connected to database");
+		console.log("Connected to the database");
 		app.listen(process.env.PORT, () => {
 			console.log(`Server is running on port ${process.env.PORT}`);
 		});
 	})
-	.catch(() => {
-		console.log("Failed to Connect");
+	.catch((error) => {
+		console.error("Failed to connect to the database", error);
 	});

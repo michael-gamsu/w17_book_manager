@@ -1,23 +1,39 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const bookSchema = mongoose.Schema(
+const bookSchema = new Schema(
 	{
 		title: {
 			type: String,
 			required: true,
 			trim: true, // Trims whitespace from the beginning and end
 		},
-		authors: [
+		author: {
+			type: String,
+			required: true,
+			trim: true,
+		},
+		genre: [
 			{
-				type: Schema.Types.ObjectId,
-				ref: "Author",
+				type: String,
+				trim: true,
 			},
 		],
-		averageRating: {
+		price: {
 			type: Number,
-			default: 0,
+			required: true,
 		},
+		availability: {
+			type: Boolean,
+			default: true,
+		},
+		ratings: [
+			{
+				type: Number,
+				min: 0,
+				max: 10,
+			},
+		],
 		isbn: {
 			type: String,
 			required: true,
@@ -51,7 +67,7 @@ const bookSchema = mongoose.Schema(
 		},
 	},
 	{
-		timestamps: true, // Automatically create createdAt and updatedAt fields
+		timestamps: true,
 	}
 );
 
